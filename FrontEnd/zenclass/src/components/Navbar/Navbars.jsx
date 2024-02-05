@@ -125,6 +125,7 @@ function Navbars() {
   const toggleSidebar = () => {
     setSidebar(!sidebar);
   };
+let signintoken = localStorage.getItem('token')
 
   return (
     <>
@@ -132,14 +133,14 @@ function Navbars() {
         <Link to="#" className="menu-bars" onClick={toggleSidebar}>
           <FaBars />
         </Link>
-        <div className="navbar-right">
+        {!signintoken ? (<div className="navbar-right">
           <Link to="/login" className="nav-link">
             Login
           </Link>
           <Link to="/signup" className="nav-link">
             Signup
           </Link>
-        </div>
+        </div>): <div>Logged in</div>}
       </div>
       <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
         <ul className="nav-menu-items" onClick={toggleSidebar}>
