@@ -32,15 +32,15 @@ router.post('/signup', async (req, res) => {
 });
 //login
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+    const { logemail, logpassword } = req.body;
     try {
-        const user = await UserModel.findOne({ email })
+        const user = await UserModel.findOne({ email:logemail.trim() })
         if (!user) {
-            return res.json({ msg: "Invalid credintials" })
+            return res.status(400).json({ msg: "Invalid email" })
         }
-        const isMatch = bcrypt.compare(password, user.password)
+        const isMatch = await bcrypt.compare(logpassword, user.password)
         if (!isMatch) {
-            return res.json({ msg: "Invalid credintials" })
+            return res.status(400).json({ msg: "Invalid password" })
         }
         const payload = {
             user: {
@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
         }
         jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "1hr" }, (err, token) => {
             if (err) throw err;
-            res.json({ token })
+            res.status(200).json({ token })
         })
 
 

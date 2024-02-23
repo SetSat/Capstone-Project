@@ -1,8 +1,9 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
-const DataContextProvider = createContext({});
+const DataContext = createContext({});
 
 export const DataProvider = ({ children }) => {
   const [name, setName] = useState("");
@@ -12,7 +13,63 @@ export const DataProvider = ({ children }) => {
   const [education, setEducation] = useState("");
   const [experience, setExperience] = useState("");
   const [subscribeToNewsletter, setSubscribeToNewsletter] = useState(false);
+  const [logemail, setlogEmail] = useState("");
+  const [logpassword, setlogPassword] = useState("");
+  const [loggedin, setloggedin] = useState(false);
+  const [finaltoken, setToken] = useState(null);
+
   const navigate = useNavigate();
+
+  const handleLoginEmail = (value) => {
+    setlogEmail(value);
+  };
+
+  const navtoLogin = () => {
+    navigate("/login");
+  };
+
+  const navtoClass = () => {
+    navigate("/class");
+  };
+
+  const handleLoginPassword = (value) => {
+    setlogPassword(value);
+  };
+
+  const handleSubmitlogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:5000/auth/login", {
+        logemail,
+        logpassword,
+      });
+      console.log("API Response:", response.data);
+      if (response.status === 400) {
+        console.log("Invalid email or password");
+
+        navtoLogin();
+      }
+
+      if (response.data) {
+        const { token } = response.data;
+        const decodetoken = jwtDecode(token);
+        setToken(decodetoken);
+        setloggedin(true);
+        setlogEmail("");
+        setlogPassword("");
+        navtoClass();
+        
+      }
+    } catch (error) {
+      console.error("Login Error:", error.message);
+    }
+  };
+  useEffect(() => {
+    if (finaltoken) {
+      console.log("Name from token", finaltoken.user.name);
+    }
+  }, [finaltoken]);
 
   const handleNameChange = (value) => {
     setName(value);
@@ -36,10 +93,6 @@ export const DataProvider = ({ children }) => {
 
   const handleExperienceChange = (value) => {
     setExperience(value);
-  };
-
-  const navtoLogin = () => {
-    navigate("/login");
   };
 
   const handleSubmit = async (e) => {
@@ -82,13 +135,23 @@ export const DataProvider = ({ children }) => {
     handleEducationChange,
     handleExperienceChange,
     handleSubmit,
+    handleSubmitlogin,
+    handleLoginEmail,
+    handleLoginPassword,
+    setloggedin,
+    loggedin,
+    logemail,
+    setlogEmail,
+    logpassword,
+    setlogPassword,
+    finaltoken,
   };
 
   return (
-    <DataContextProvider.Provider value={dataContextValue}>
+    <DataContext.Provider value={dataContextValue}>
       {children}
-    </DataContextProvider.Provider>
+    </DataContext.Provider>
   );
 };
 
-export default DataContextProvider;
+export default DataContext;

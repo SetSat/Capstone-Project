@@ -1,0 +1,98 @@
+import React, { useContext, useState } from "react";
+import axios from "axios";
+import "./Login.css";
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
+
+const Login = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmitlogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/auth/login",
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data);
+      console.log("Response Status:", response.status);
+      console.log("Response Data:", response.data);
+      if (response.status == 400) {
+        console.log("Invalid email or password");
+        navigate("/login")
+      }
+      if (response.data) {
+        const { token } = response.data;
+        localStorage.setItem("token", token)
+        let localtoken = localStorage.getItem("token")
+        const decoded = jwtDecode(localtoken);
+        console.log(decoded.user.name)
+
+        
+        navigate("/class");
+      }
+    } catch (error) {
+      console.error("Login Error:", error.message);
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  return (
+    <div className="body-container">
+      <form className="form-control login" onSubmit={handleSubmitlogin}>
+        <p className="title">Login</p>
+        <div className="input-field">
+          <input
+            required
+            className="input"
+            type="text"
+            value={email}
+            onChange={handleEmailChange}
+          />
+          <label className="label" htmlFor="input">
+            Enter Email
+          </label>
+        </div>
+        <div className="input-field">
+          <input
+            required
+            className="input"
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <label className="label" htmlFor="input">
+            Enter Password
+          </label>
+        </div>
+        <button type="submit" className="submit-btn">
+          Sign In
+        </button>
+        <Link to="/signup">
+          <button className="signup-btn">Sign Up</button>
+        </Link>
+      </form>
+    </div>
+  );
+};
+
+export default Login;

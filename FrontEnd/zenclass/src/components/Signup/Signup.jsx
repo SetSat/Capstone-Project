@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 
-import './Signup.css';
-import DataContextProvider from '../../DataContext/DataContextProvider';
+import "./Signup.css";
+// import DataContextProvider from '../../DataContext/DataContextProvider';
+import DataContext from "../../DataContext/DataContextProvider";
 
 const Signup = () => {
   const {
@@ -20,7 +21,7 @@ const Signup = () => {
     handleExperienceChange,
     handleSubscribeChange,
     handleSubmit,
-  } = useContext(DataContextProvider);
+  } = useContext(DataContext);
 
   return (
     <form className="form" onSubmit={handleSubmit}>
@@ -85,7 +86,6 @@ const Signup = () => {
         onChange={(e) => handleExperienceChange(e.target.value)}
       />
 
-      
       <button type="submit" className="form--submit">
         Sign up
       </button>
