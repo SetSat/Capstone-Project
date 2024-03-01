@@ -11,6 +11,7 @@
   text-align: center;
   color: white;
   font-size: 30px;
+  padding-left: 7rem;
 }
 .menu-bars {
   margin-left: 1rem;
@@ -95,4 +96,15 @@ span {
   text-decoration: none;
   color: black;
   margin-left: 20px;
+}
+.displayname {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+}
+.name {
+  padding: 15px;
+  color: white;
+  font-size: 20px;
+  padding-top: 25px;
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,7 +10,6 @@ import "./App.css";
 import Login from "./components/LoginSignin/Login";
 import Signup from "./components/Signup/Signup";
 import Navbars from "./components/Navbar/Navbars";
-import { DataProvider } from "./DataContext/DataContextProvider";
 import Class from "./components/LoginSignin/class/Class";
 import Task from "./components/task/Task";
 import Webcode from "./components/webcode/Webcode";
@@ -26,63 +25,106 @@ import Leaderboard from "./components/leaderboard/Leaderboard";
 import Syllabus from "./components/syllabus/Syllabus";
 import Dashboard from "./components/dashboard/Dashboard";
 
-import Certificate from "./components/certificate/Certificate";
-function App() {
-  return (
-    <Router>
-      <DataProvider>
-        {/* <Navbars></Navbars> */}
-        <Routes>
-          <Route exact path="/" element={<Login></Login>}></Route>
-          <Route exact path="/login" element={<Login />}></Route>
-          <Route exact path="/signup" element={<Signup />}></Route>
-          <Route exact path="/class" element={<Class></Class>}></Route>
 
-          <Route
-            exact
-            path="/dashboard"
-            element={<Dashboard></Dashboard>}
-          ></Route>
-          <Route exact path="/task" element={<Task></Task>}></Route>
-          <Route exact path="/webcode" element={<Webcode></Webcode>}></Route>
-          <Route exact path="/capstone" element={<Capstone></Capstone>}></Route>
-          <Route exact path="/queries" element={<Queries></Queries>}></Route>
-          <Route
-            exact
-            path="/requirements"
-            element={<Requirement></Requirement>}
-          ></Route>
-          <Route
-            exact
-            path="/portfolio"
-            element={<Portfolio></Portfolio>}
-          ></Route>
-          <Route
-            exact
-            path="/application"
-            element={<Application></Application>}
-          ></Route>
-          <Route
-            exact
-            path="/interviewtasks"
-            element={<Interviewtask></Interviewtask>}
-          ></Route>
-          <Route exact path="/leave" element={<Leave></Leave>}></Route>
-          <Route exact path="/mock" element={<Mock></Mock>}></Route>
-          <Route
-            exact
-            path="/certificate"
-            element={<Certificate></Certificate>}
-          ></Route>
-          <Route
-            exact
-            path="/leaderboard"
-            element={<Leaderboard></Leaderboard>}
-          ></Route>
-          <Route exact path="/syllabus" element={<Syllabus></Syllabus>}></Route>
+import Certificate from "./components/certificate/Certificate";
+import DataContext from "./DataContext/DataContextProvider";
+function App() {
+  const { loggedin } = useContext(DataContext);
+  return (
+    <div>
+        {loggedin && <Navbars></Navbars>}
+        <Routes>
+          {!loggedin && (
+            <Route exact path="/" element={<Login></Login>}></Route>
+          )}
+          {!loggedin && <Route exact path="/login" element={<Login />}></Route>}
+          {!loggedin && (
+            <Route exact path="/signup" element={<Signup />}></Route>
+          )}
+
+          {loggedin && (
+            <Route
+              exact
+              path="/dashboard"
+              element={<Dashboard></Dashboard>}
+            ></Route>
+          )}
+          {loggedin && (
+            <Route exact path="/class" element={<Class></Class>}></Route>
+          )}
+          {loggedin && (
+            <Route exact path="/task" element={<Task></Task>}></Route>
+          )}
+          {loggedin && (
+            <Route exact path="/webcode" element={<Webcode></Webcode>}></Route>
+          )}
+          {loggedin && (
+            <Route
+              exact
+              path="/capstone"
+              element={<Capstone></Capstone>}
+            ></Route>
+          )}
+          {loggedin && (
+            <Route exact path="/queries" element={<Queries></Queries>}></Route>
+          )}
+          {loggedin && (
+            <Route
+              exact
+              path="/requirements"
+              element={<Requirement></Requirement>}
+            ></Route>
+          )}
+          {loggedin && (
+            <Route
+              exact
+              path="/portfolio"
+              element={<Portfolio></Portfolio>}
+            ></Route>
+          )}
+          {loggedin && (
+            <Route
+              exact
+              path="/application"
+              element={<Application></Application>}
+            ></Route>
+          )}
+          {loggedin && (
+            <Route
+              exact
+              path="/interviewtasks"
+              element={<Interviewtask></Interviewtask>}
+            ></Route>
+          )}
+          {loggedin && (
+            <Route exact path="/leave" element={<Leave></Leave>}></Route>
+          )}
+          {loggedin && (
+            <Route exact path="/mock" element={<Mock></Mock>}></Route>
+          )}
+          {loggedin && (
+            <Route
+              exact
+              path="/certificate"
+              element={<Certificate></Certificate>}
+            ></Route>
+          )}
+          {loggedin && (
+            <Route
+              exact
+              path="/leaderboard"
+              element={<Leaderboard></Leaderboard>}
+            ></Route>
+          )}
+          {loggedin && (
+            <Route
+              exact
+              path="/syllabus"
+              element={<Syllabus></Syllabus>}
+            ></Route>
+          )}
         </Routes>
-      </DataProvider>
-    </Router>
+        </div>
   );
 }
 

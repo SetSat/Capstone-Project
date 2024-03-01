@@ -17,7 +17,7 @@ const DataTable = () => {
     axios
       .get("http://localhost:5000/leader/data")
       .then((response) => {
-        setData(response.data);
+        setData(response.data.sort((a, b) => a.rank - b.rank));
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

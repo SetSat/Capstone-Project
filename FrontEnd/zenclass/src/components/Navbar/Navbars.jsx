@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { MdOutlineCancel } from "react-icons/md";
 import "./navbar.css";
 import DataContext from "../../DataContext/DataContextProvider";
+import Logout from "../logout/Logout";
 
 import {
   FaListAlt,
@@ -140,7 +141,6 @@ function Navbars() {
 
   const toggleSidebar = () => {
     setSidebar(!sidebar);
-    
   };
 
   return (
@@ -150,7 +150,11 @@ function Navbars() {
           <FaBars />
         </Link>
         <div className="zenclass">Zenclass</div>
-        {finaltoken.user.name ? (<div>{finaltoken.user.name}</div>): (<div className="navbar-right">
+       
+        {finaltoken.user.name ? ( <div className="displayname">
+          <div className="name">{finaltoken.user.name}</div>
+          <div><Logout></Logout></div>
+        </div> ): (<div className="navbar-right">
         <Link to="/login" className="nav-link">
           Login
         </Link>
@@ -159,7 +163,6 @@ function Navbars() {
         </Link>
       </div>)
         }
-        
       </div>
       <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
         <ul className="nav-menu-items" onClick={toggleSidebar}>

@@ -59,12 +59,18 @@ export const DataProvider = ({ children }) => {
         setlogEmail("");
         setlogPassword("");
         navtoClass();
-        
       }
     } catch (error) {
       console.error("Login Error:", error.message);
     }
   };
+  const logoutfunction = () => {
+    setloggedin(false);
+
+    setToken(null);
+    navtoLogin();
+  };
+
   useEffect(() => {
     if (finaltoken) {
       console.log("Name from token", finaltoken.user.name);
@@ -145,6 +151,7 @@ export const DataProvider = ({ children }) => {
     logpassword,
     setlogPassword,
     finaltoken,
+    logoutfunction,
   };
 
   return (
